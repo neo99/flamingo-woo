@@ -1,21 +1,30 @@
 <?php
-/**
- * Functions.php
- *
- * @package  Theme_Customisations
- * @author   WooThemes
- * @since    1.0.0
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
-/**
- * functions.php
- * Add PHP snippets here
- */
+/*
+Plugin Name:  Flamingo Woo
+Plugin URI: https://placeholder.com/
+Description: Display the latest contact message from Flamingo on WooCommerce order detail 
+Author: Neo Wang
+Author URI: https://placeholder.wordpress.com/
+Text Domain: flamingo-woo
+Domain Path: /languages/
+Version: 0.01
+License:     GPL2
  
+Flamingo User is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+ 
+Flamingo User is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+ 
+You should have received a copy of the GNU General Public License
+along with Flamingo User. If not, see https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html.
+
+*/
+
 // Adding Meta container admin shop_order pages
 add_action( 'add_meta_boxes', 'mv_add_meta_boxes' );
 if ( ! function_exists( 'mv_add_meta_boxes' ) )

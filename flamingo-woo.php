@@ -26,27 +26,39 @@ along with Flamingo User. If not, see https://www.gnu.org/licenses/old-licenses/
 */
 
 // Adding Meta container admin shop_order pages
-add_action( 'add_meta_boxes', 'mv_add_meta_boxes' );
-if ( ! function_exists( 'mv_add_meta_boxes' ) )
+add_action( 'add_meta_boxes', 'flamingo_woo_add_meta_boxes' );
+if ( ! function_exists( 'flamingo_woo_add_meta_boxes' ) )
 {
-    function mv_add_meta_boxes()
+    function flamingo_woo_add_meta_boxes()
     {
-        add_meta_box( 'mv_other_fields', __('My Field','woocommerce'), 'mv_add_other_fields_for_packaging', 'shop_order', 'side', 'core' );
+        add_meta_box( 'flamingo_woo_last_contact', __('Last Contact','woocommerce'), 'flamingo_woo_add_last_contact', 'shop_order', 'normal', 'core' );
     }
 }
 
 // Adding Meta field in the meta container admin shop_order pages
-if ( ! function_exists( 'mv_add_other_fields_for_packaging' ) )
+if ( ! function_exists( 'flamingo_woo_add_last_contact' ) )
 {
-    function mv_add_other_fields_for_packaging()
+    function flamingo_woo_add_last_contact()
     {
-        $lastContact = new Flamingo_Inbound_Message(46);
+        $current_user = wp_get_current_user();
+        $allCF7s = WPCF7_ContactForm::find(array('post_status'=>'publish'));
+        foreach($allCF7s as $c) :
+            echo $c->title;
+            $list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','channel'=>$c->title));
+            //$list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','meta_key'=>'post_author_email','meta_value'=>'neo.l.h.wang@gmail.com','channel'=>$c->title));
+            //$list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','meta_key'=>'post_author_email','meta_value'=>$current_user->user_email,'channel_id'=>$c->id));
+            foreach($list as $lastContact) :
+     		    flamingo_woo_meta_box($lastContact);
+            endforeach;
+        endforeach;
 
-		flamingo_inbound_fields_meta_box($lastContact);
     }
 }
 
-function flamingo_inbound_fields_meta_box( $post ) {
+if ( ! function_exists( 'flamingo_woo_meta_box' ) )
+{
+
+function flamingo_woo_meta_box( $post ) {
 ?>
 <table class="widefat message-fields striped">
 <tbody>
@@ -61,4 +73,5 @@ function flamingo_inbound_fields_meta_box( $post ) {
 </tbody>
 </table>
 <?php
+}
 }

@@ -42,10 +42,16 @@ if ( ! function_exists( 'flamingo_woo_add_last_contact' ) )
     {
         $current_user = wp_get_current_user();
         $allCF7s = WPCF7_ContactForm::find(array('post_status'=>'publish'));
+		
+		global $post;
+
+$order = new WC_Order($post->ID);
+
+		
         foreach($allCF7s as $c) :
             echo $c->title;
-            $list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','channel'=>$c->title));
-            //$list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','meta_key'=>'post_author_email','meta_value'=>'neo.l.h.wang@gmail.com','channel'=>$c->title));
+            //$list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','channel'=>$c->title));
+            $list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','meta_key'=>'post_author_email','meta_value'=>$order->get_user()->get('user_email'),'channel'=>$c->title));
             //$list = Flamingo_Inbound_Message::find(array('post_status'=>'publish','meta_key'=>'post_author_email','meta_value'=>$current_user->user_email,'channel_id'=>$c->id));
             foreach($list as $lastContact) :
      		    flamingo_woo_meta_box($lastContact);
